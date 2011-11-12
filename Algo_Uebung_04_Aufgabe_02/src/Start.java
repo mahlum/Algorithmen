@@ -1,3 +1,9 @@
+/**
+ * Juhu es get
+ * ht 
+ * 
+ * ht :D
+ */
 import Values.*;
 
 public class Start {
