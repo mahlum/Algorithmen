@@ -25,6 +25,14 @@ public class GenerateValues {
 		
 	}
 	
+	public boolean isSorted(){
+		boolean sorted = true;
+		for(int i = 0; i < field.length-1; ++i)
+			if(field[i+1] < field[i])
+				sorted = false;
+		return sorted;
+	}
+	
 	public void sortIt(int j){
 		Quicksort.quick_sort(field, j);
 	}

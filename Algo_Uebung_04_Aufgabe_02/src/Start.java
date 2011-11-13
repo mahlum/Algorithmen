@@ -17,11 +17,12 @@ public class Start {
 		
 		for(int i = 1; i < 4; ++i){
 			for(int j = 0; j < 4; ++j){
-				val.setValues(100, i);
+				val.setValues(3000000, i);
 				timeStart = System.currentTimeMillis();
 				val.sortIt(j);
 				timeEnd = System.currentTimeMillis();
-				System.out.println((timeEnd - timeStart) + " mSec bei " + i + ".ter Choice");
+				System.out.println((timeEnd - timeStart) + " mSec bei "+ i +".ter Choice");
+				System.out.println("Liste sortiert: " + val.isSorted());
 			}
 //			for(int j = 30; j < 65; ++j){
 //				System.out.print(val.getFieldValue(i) + " ");
