@@ -1,8 +1,6 @@
 /**
- * Juhu es get
- * ht 
+ * Juhu es geht :)
  * 
- * ht :D
  */
 import Values.*;
 
