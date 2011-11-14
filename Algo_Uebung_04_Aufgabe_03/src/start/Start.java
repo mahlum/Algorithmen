@@ -1,3 +1,9 @@
+/**
+ * Mal sehen, ob Git mich jetzt wieder enttaeuscht ...
+ * Author: Timo Peters
+ */
+
+
 package start;
 import values.*;
 
