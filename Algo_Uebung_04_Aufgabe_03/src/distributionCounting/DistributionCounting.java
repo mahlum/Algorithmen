@@ -7,8 +7,10 @@ public class DistributionCounting {
 		RangeCount[] range = new RangeCount[2];
 		calcRange(field, range);
 		
-		int[] count1 = new int[Math.abs(range[0].getMax()-range[0].getMin())];
-		int[] count2 = new int[Math.abs(range[1].getMax()-range[1].getMin())];
+//		int[] count1 = new int[Math.abs(range[0].getMax()-range[0].getMin())];
+//		int[] count2 = new int[Math.abs(range[1].getMax()-range[1].getMin())];
+		int[] count1 = new int[m];
+		int[] count2 = new int[m];
 		
 //		for(int i = 0; i < m; ++i){
 //			count[i] = 0;
