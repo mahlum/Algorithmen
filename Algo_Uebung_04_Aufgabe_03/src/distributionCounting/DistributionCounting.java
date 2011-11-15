@@ -40,7 +40,7 @@ public class DistributionCounting {
 		int range1min = field[0], range2max = field[0], range1max, range2min;
 		int[] range = new int[4];
 		for(int i = 0; i < field.length; ++i){
-			System.out.println(field[i]);
+//			System.out.println(field[i]);
 			if(field[i] < range1min)
 				range1min = field[i];
 			if(field[i] > range2max)
