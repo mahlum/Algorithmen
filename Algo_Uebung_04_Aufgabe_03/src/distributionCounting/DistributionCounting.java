@@ -7,10 +7,10 @@ public class DistributionCounting {
 		RangeCount[] range = new RangeCount[2];
 		calcRange(field, range);
 		
-//		int[] count1 = new int[Math.abs(range[0].getMax()-range[0].getMin())];
-//		int[] count2 = new int[Math.abs(range[1].getMax()-range[1].getMin())];
-		int[] count1 = new int[m];
-		int[] count2 = new int[m];
+		int[] count1 = new int[Math.abs(range[0].getMax()-range[0].getMin()+1)];
+		int[] count2 = new int[Math.abs(range[1].getMax()-range[1].getMin()+1)];
+//		int[] count1 = new int[m];
+//		int[] count2 = new int[m];
 		
 //		for(int i = 0; i < m; ++i){
 //			count[i] = 0;
@@ -22,13 +22,15 @@ public class DistributionCounting {
 				++count2[Math.abs(range[1].getMin()-field[i])];
 //			++count[field[i]];
 		}
-		for(int i1 = 0, i2 = 0; i1 < m; ++i1){
+		int i2 = 0;
+		for(int i1 = 0; i1 < count1.length; ++i1){
 			for(int i3 = 0; i3 < count1[i1]; ++i3){
-				field[i2++] = count1[i1];
+				field[i2++] = i1;
 			}
-			i2 = 0;
+		}
+		for(int i1 = 0; i1 < count2.length; ++i1){
 			for(int i3 = 0; i3 < count2[i1]; ++i3){
-				field[i2++ + count1.length] = count2[i1];
+				field[i2++] = i1 + count1.length;
 			}
 		}
 		return count;
@@ -38,6 +40,7 @@ public class DistributionCounting {
 		int range1min = field[0], range2max = field[0], range1max, range2min;
 		int[] range = new int[4];
 		for(int i = 0; i < field.length; ++i){
+			System.out.println(field[i]);
 			if(field[i] < range1min)
 				range1min = field[i];
 			if(field[i] > range2max)
