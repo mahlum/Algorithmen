@@ -38,7 +38,6 @@ public class DistributionCounting {
 	
 	public static void calcRange(int[] field, RangeCount[] r){
 		int range1min = field[0], range2max = field[0], range1max, range2min;
-		int[] range = new int[4];
 		for(int i = 0; i < field.length; ++i){
 //			System.out.println(field[i]);
 			if(field[i] < range1min)
