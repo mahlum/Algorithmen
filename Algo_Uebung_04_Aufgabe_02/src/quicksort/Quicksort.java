@@ -29,7 +29,7 @@ public class Quicksort {
 			MID = field[(iLeft + iRight) / 2];
 			break;
 		case 1:
-			MID = add((K)field[iLeft], (K)field[iRight]);
+			MID = add(field[iLeft], field[iRight]);
 			break;
 		case 2:
 			MID = field[iLeft];

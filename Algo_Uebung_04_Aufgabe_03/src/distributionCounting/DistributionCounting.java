@@ -13,7 +13,7 @@ public class DistributionCounting {
 //		int[] count2 = new int[m];
 		
 //		for(int i = 0; i < m; ++i){
-//			count[i] = 0;
+//			count [i] = 0;
 //		}
 		for(int i = 0; i < field.length; ++i){
 			if(field[i] < range[0].getMax())

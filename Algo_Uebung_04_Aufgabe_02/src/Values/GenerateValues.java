@@ -29,7 +29,7 @@ public class GenerateValues {
 		boolean sorted = true;
 		for(int i = 0; i < field.length-1; ++i)
 			if(field[i+1] < field[i])
-				sorted = false;
+				return false;
 		return sorted;
 	}
 	
