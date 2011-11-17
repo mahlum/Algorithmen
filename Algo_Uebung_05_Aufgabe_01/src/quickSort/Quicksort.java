@@ -1,4 +1,4 @@
-package quicksort;
+package quickSort;
 import java.math.*;
 
 /**

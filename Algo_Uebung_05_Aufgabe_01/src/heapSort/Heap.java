@@ -31,7 +31,7 @@ public class Heap<K extends Comparable<K>> {
 		m_Keys[iIndex] = k;
 	}
 	
-	private void downheap(int iIndex){
+	public static<K> void downheap(K[] field, int iIndex, int i){
 		K k = m_Keys[iIndex];
 		while(iIndex < m_iNext / 2){
 			int iSon = 2 * iIndex + 1;
