@@ -12,7 +12,7 @@ public class HeapSort {
 	public static <K extends Comparable<K>> void sort(K[] field){
 //		Heap<K> a = new Heap<K>(field.length);
 		for(int i = (field.length-1) / 2; i >= 0; --i)
-			Heap.downheap(field, field.length, i);
+			Heap.downheap(field, field.length-1, i);
 		for(int i = field.length-1; i > 0; --i){
 			swap(field,0,i);
 			Heap.downheap(field, i, 0);

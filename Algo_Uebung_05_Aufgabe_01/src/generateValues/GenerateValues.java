@@ -45,6 +45,13 @@ public class GenerateValues {
 		field = tmpField;
 	}
 	
+	public boolean isSorted(){
+		for(int i = 0; i < field.length-1; ++i)
+			if(field[i].compareTo(field[i+1]) > 0)
+				return false;
+		return true;
+	}
+	
 	public String[] getField() {
 		return field;
 	}

@@ -14,7 +14,8 @@ public class Start {
 			timeStart = System.currentTimeMillis();
 			g.sortIt();
 			timeEnd = System.currentTimeMillis();
-			System.out.print(timeEnd - timeStart + " mSec \t\t ");
+			System.out.print(timeEnd - timeStart + " mSec ");
+			System.out.print(g.isSorted() + "\t\t ");
 			g.reset();
 		}
 		
