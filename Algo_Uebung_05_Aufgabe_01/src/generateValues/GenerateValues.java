@@ -29,10 +29,13 @@ public class GenerateValues {
 	public void genValues(int values){
 		field = new String[values];
 		for (int i = 0; i < values; ++i){
+			field[i] = String.valueOf((char)(Math.random()*26+'A'));
 			for(int j = 0; j < 15; ++j){
 				char tmpChar = (char)(Math.random()*26+'A');
 				field[i] = field[i] + String.valueOf(tmpChar);
 			}
+			if(i % 500000 == 0)
+				System.out.println(i);
 		}
 		tmpField = field;
 	}

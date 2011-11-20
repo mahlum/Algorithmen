@@ -1,8 +1,8 @@
 package heapSort;
 
 public class Heap<K extends Comparable<K>> {
-	private int m_iNext; // der nächste freie Index ...
-	private K[] m_Keys; // die einzelnen Schlüssel
+	private int m_iNext; // der nï¿½chste freie Index ...
+	private K[] m_Keys; // die einzelnen Schlï¿½ssel
 
 	public Heap(int iSize) {
 		m_iNext = 0;
@@ -32,32 +32,20 @@ public class Heap<K extends Comparable<K>> {
 	}
 
 	public static <K extends Comparable<K>> void downheap(K[] field,
-			int iIndex, int n) {
-		int child;
-		K tmp;
-		for (tmp = field[iIndex]; iIndex * 2 <= n; iIndex = child) {
-			child = iIndex * 2;
-			if ((child != n) && (field[child + 1].compareTo(field[child]) > 0)) // hier auch evtl "<" setzen
-				child++;
-			if (tmp.compareTo(field[child]) < 0)
-				field[iIndex] = field[child];
-			else
+			int i, int len) {
+		int child = 2*i+1;														// child des aktuellen berechnen
+		K tmp;																	// tmp Variable deklarieren
+		for (tmp = field[i]; 2*i+1 < len; i = child) {							// tmp = aktuelle field[i]-Element
+			child = 2 * i + 1;													// child neu berechnen (fÃ¼r downheap)
+			if ((child != len-1) && (field[child].compareTo(field[child+1]) < 0)) 	// wenn child != field.length-1 und
+																					// field[child] im vergleich zum zweiten 
+																					// field[child] kleiner, dann ausfÃ¼hren
+				child++;															// child einen hÃ¶her setzen
+			if (tmp.compareTo(field[child]) < 0)									// wenn tmp file < field[child], dann 
+				field[i] = field[child];											// tauschen
+			else																	// ansonsten abbruch
 				break;
 		}
-		field[iIndex] = tmp;
+		field[i] = tmp;																// evtl. vertauschen
 	}
-
-	// K k = m_Keys[iIndex];
-	// while(iIndex < m_iNext / 2){
-	// int iSon = 2 * iIndex + 1;
-	// if(iSon < m_iNext-1 && m_Keys[iSon].compareTo(m_Keys[iSon+1])< 0)
-	// ++iSon;
-	// if(k.compareTo(m_Keys[iSon]) >= 0)
-	// break;
-	// m_Keys[iIndex] = m_Keys[iSon];
-	// iIndex = iSon;
-	// }
-	// m_Keys[iIndex] = k;
-	// }
-
 }

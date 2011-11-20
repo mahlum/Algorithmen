@@ -5,10 +5,10 @@ import generateValues.*;
 public class Start {
 	public static void main(String[] args){
 		GenerateValues g = new GenerateValues();
-		int values = 1500000;
+		int values = 10000000;
 		long timeStart, timeEnd;
 		g.genValues(values);
-		System.out.println("invers \t\t\t random \t\t sorted");
+		System.out.println("invers \t\t\t random \t\t\t sorted");
 		for(int i = 0; i < 3; ++i){
 			g.sortValues(i);
 			timeStart = System.currentTimeMillis();
