@@ -30,7 +30,7 @@ public class GenerateValues {
 		field = new String[values];
 		for (int i = 0; i < values; ++i){
 			field[i] = String.valueOf((char)(Math.random()*26+'A'));
-			for(int j = 0; j < 15; ++j){
+			for(int j = 0; j < (int)(Math.random()*30+5); ++j){
 				char tmpChar = (char)(Math.random()*26+'A');
 				field[i] = field[i] + String.valueOf(tmpChar);
 			}
