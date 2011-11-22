@@ -47,17 +47,20 @@ public class GenerateValues {
 				field[i] = field[i] + String.valueOf(tmpChar);
 			}
 			if(i % 500000 == 0)
-				System.out.println(i);
+				System.out.print(i + " " + field[i] + " | ");
 		}
-		tmpField = field;
+		System.out.println();
+		tmpField = new String[values];
+		for(int i = 0; i < values; ++i)
+			tmpField[i] = field[i];
 	}
 	
 	public void sortIt(){
-//		MergeSort.merge_sort(field);
+		MergeSort.merge_sort(field);
 	}
 	
-	public void sortIntIt(int choice){
-		MergeSort.merge_sort(intField, choice);
+	public void sortIntIt(){
+		MergeSort.merge_sort(intField);
 	}
 	
 	public void reset(){
