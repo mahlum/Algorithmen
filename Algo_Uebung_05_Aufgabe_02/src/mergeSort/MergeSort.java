@@ -13,20 +13,35 @@ public class MergeSort {
 		if(iLeft < iRight){
 			final int MIDDLE = (iLeft + iRight)/2;							//der genaue Mittelwert wird hier bestimmt
 			merge_sort_help(field, iLeft, MIDDLE);							//ruft rekursiv die merge_sort_help methode auf
-			merge_sort_help(field, MIDDLE+1, iRight);						//bis nur noch ein Element übrig ist
+			merge_sort_help(field, MIDDLE+1, iRight);						//bis nur noch ein Element ï¿½brig ist
 			
 			K[] tmp = (K[])new Comparable[iRight-iLeft+1];					//eine tmp-Array vom Typ K anlegen, welches Comparable ist
 			
 			for(int i = iLeft; i <= iRight; ++i)							//gehe von linken bis zum rechten feld komplett durch
 				tmp[i - iLeft] = field[i];									//und setze an der i - iLeften Stelle das field[i] ding
 			
+//			int iL = MIDDLE;
 			int iL = 0;
-//			int iR = tmp.length-1;		
-			int iR = MIDDLE+1;
-			for(int i = iLeft; i <= iRight; ++i){
+			int iR = MIDDLE+1;		
+//			int iR = MIDDLE+1;
+//			for(int i = iLeft; i <= iRight; ++i){
+////				field[i] = tmp[iL].compareTo(tmp[iR]) < 0 ? tmp[iL--] : tmp[iR++];
 //				field[i] = tmp[iL].compareTo(tmp[iR]) < 0 ? tmp[iL++] : tmp[iR--];
-				field[i] = tmp[iL].compareTo(tmp[iR]) < 0 ? tmp[iL++] : iR+1 > iRight ? tmp[iR] : tmp[iR++];
+//			}
+			
+			for(int i = iLeft; i <= iRight;++i){
+				if(tmp[iL].compareTo(tmp[iR]) < 0){
+					field[i] = tmp[iL++];
+				}else {
+					field[i] = tmp[iR++];
+				}
+				if(iR == tmp.length){
+					while(iL != MIDDLE)
+						field[i++] = tmp[iL++];
+					break;
+				}
 			}
+			
 		}
 	}
 	
@@ -34,7 +49,7 @@ public class MergeSort {
 		if(iLeft < iRight){
 			final int MIDDLE = (iLeft + iRight)/2;							//der genaue Mittelwert wird hier bestimmt
 			merge_sort_help2(field, iLeft, MIDDLE);							//ruft rekursiv die merge_sort_help methode auf
-			merge_sort_help2(field, MIDDLE+1, iRight);						//bis nur noch ein Element übrig ist
+			merge_sort_help2(field, MIDDLE+1, iRight);						//bis nur noch ein Element ï¿½brig ist
 			
 			K[] tmp = (K[])new Comparable[iRight-iLeft+1];					//eine tmp-Array vom Typ K anlegen, welches Comparable ist
 			
