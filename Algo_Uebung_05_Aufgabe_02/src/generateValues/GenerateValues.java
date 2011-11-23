@@ -55,12 +55,12 @@ public class GenerateValues {
 			tmpField[i] = field[i];
 	}
 	
-	public void sortIt(){
-		MergeSort.merge_sort(field);
+	public void sortIt(boolean choice){
+		MergeSort.merge_sort(field, choice);
 	}
 	
-	public void sortIntIt(){
-		MergeSort.merge_sort(intField);
+	public void sortIntIt(boolean choice){
+		MergeSort.merge_sort(intField, choice);
 	}
 	
 	public void reset(){
