@@ -12,37 +12,23 @@ public class Start {
 		
 		// Erstmal Daten füllen und sortieren
 		timeStart = System.currentTimeMillis();
-		gv.genIntValues(values);
+//		gv.genIntValues(values);
+		gv.genStringValues(values);
 		timeEnd = System.currentTimeMillis();
 		System.out.println("Zeit: " + (timeEnd - timeStart));
 		
 		
 		// Daten ausgeben (Beispiele)
 		timeStart = System.currentTimeMillis();
-		gv.searchIntIt(values);
-		timeEnd = System.currentTimeMillis();
-		System.out.println("Zeit: " + (timeEnd - timeStart));
-		timeStart = System.currentTimeMillis();
 		gv.searchSeq(values);
 		timeEnd = System.currentTimeMillis();
 		System.out.println("Zeit: " + (timeEnd - timeStart));
-//		timeStart = System.currentTimeMillis();
-//		gv.searchIntIt(2500);
-//		timeEnd = System.currentTimeMillis();
-//		System.out.println("Zeit: " + (timeEnd - timeStart));
-//		timeStart = System.currentTimeMillis();
-//		gv.searchIntIt(50000);
-//		timeEnd = System.currentTimeMillis();
-//		System.out.println("Zeit: " + (timeEnd - timeStart));
-//		timeStart = System.currentTimeMillis();
-//		gv.searchIntIt(500000);
-//		timeEnd = System.currentTimeMillis();
-//		System.out.println("Zeit: " + (timeEnd - timeStart));
-//		timeStart = System.currentTimeMillis();
-//		gv.searchIntIt(3000);
-//		timeEnd = System.currentTimeMillis();
-//		System.out.println("Zeit: " + (timeEnd - timeStart));
-//		
-//		
+		
+		timeStart = System.currentTimeMillis();
+		gv.searchStringIt(values);
+		timeEnd = System.currentTimeMillis();
+		System.out.println("Zeit: " + (timeEnd - timeStart));
+		// Daten ausgeben Ende
+		
 	}
 }

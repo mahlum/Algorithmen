@@ -3,7 +3,8 @@ import binSearch.*;
 
 public class GenValue {
 	BinSearch bs;
-	Integer intKeys;    // K key
+	Integer intKeys;    // K key (Integer)
+	String  StringKey;  // K key (String)
 	int intValues; 		// D Data
 	String tmpField;
 	
@@ -44,9 +45,20 @@ public class GenValue {
 			System.out.println("Kein Wert gefunden!");
 	}
 	
-	public void searchSeq(int value){
+	public void searchStringIt(int value){
+		Node tmp;
+		StringKey = (String)bs.getM_pData()[value / 4 + 200].m_Key;
+		tmp = bs.search(StringKey);
+		if(tmp != null)
+			System.out.println("Fuer den Schlüssel " + tmp.m_Key + " gibt es folgene Daten: " + tmp.m_Data);
+		else
+			System.out.println("Kein Wert gefunden!");
+	}
+	
+	public void searchSeq(int values){
+		StringKey = (String)bs.getM_pData()[values / 4 + 200].m_Key;
 		for(int i = 0; i < bs.getM_pData().length; ++i){
-			if(intKeys == bs.getM_pData()[i].m_Key){
+			if(StringKey == bs.getM_pData()[i].m_Key){
 				System.out.println("Seq Suche Erg: " + bs.getM_pData()[i].m_Data + " " + i);
 			}
 		}

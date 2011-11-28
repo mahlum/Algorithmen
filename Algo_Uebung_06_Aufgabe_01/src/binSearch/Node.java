@@ -1,6 +1,6 @@
 package binSearch;
 
-public class Node<K, D> {
+public class Node<K, D>{
 	public K m_Key;
 	public D m_Data;
 	
