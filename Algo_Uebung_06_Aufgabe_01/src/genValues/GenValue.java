@@ -1,5 +1,7 @@
 package genValues;
+
 import binSearch.*;
+import interpolationSearch.*;
 
 public class GenValue {
 	BinSearch bs;
@@ -50,9 +52,15 @@ public class GenValue {
 		StringKey = (String)bs.getM_pData()[value / 4 + 200].m_Key;
 		tmp = bs.search(StringKey);
 		if(tmp != null)
-			System.out.println("Fuer den Schlüssel " + tmp.m_Key + " gibt es folgene Daten: " + tmp.m_Data);
+			System.out.println("Binäre suche Erg: " + tmp.m_Data);
 		else
 			System.out.println("Kein Wert gefunden!");
+	}
+	
+	public void StringIntSearch(int value){
+		Node tmp;
+		StringKey = (String)bs.getM_pData()[value / 4 + 200].m_Key;
+		tmp = 
 	}
 	
 	public void searchSeq(int values){
