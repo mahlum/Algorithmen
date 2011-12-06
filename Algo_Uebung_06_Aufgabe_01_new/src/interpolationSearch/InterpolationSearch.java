@@ -53,7 +53,40 @@ public class InterpolationSearch<K extends Comparable<K>, D> {
 	}
 	
 	private Node<K, D> search(K key){
+		int iL = 0;
+		int iR = m_iNextFree - 1;
+		while(iL <= iR){
+			K keyL = m_pData[iL].m_Key;
+			K keyR = m_pData[iR].m_Key;
+			final int MIDDLE = (iL + iR) / 2;
+			final int RES = m_pData[MIDDLE].m_Key.compareTo(key);
+			if(RES == 0)
+				return m_pData[MIDDLE];
+			else if(RES < 0)
+				iL = MIDDLE + 1;
+			else
+				iR = MIDDLE - 1;
+		}
 		return null;
+	}
+	
+	private int calcMiddle(K key, K keyL, K keyR, int iL, int iR){
+		if(key instanceof Integer)
+			return iL + ((Integer)key - (Integer)keyL) * (iR - iL) / ((Integer)keyR - (Integer)keyL);
+		else if(key instanceof String){
+			char[] charkeyL = keyL.toString().toCharArray();
+			char[] charkeyR = keyR.toString().toCharArray();
+			char[] charkey = key.toString().toCharArray();
+			if(charkey[0] == charkeyL[0])
+				return 0;
+			else if(charkey[0] == charkeyR[0])
+				return m_pData.length-1;
+			else {
+				
+			}
+			
+		}
+		return 0;
 	}
 	
 	public Node<K, D>[] getM_pData() {
