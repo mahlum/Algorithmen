@@ -4,70 +4,168 @@
 
 package binTree;
 
-public class BinTreeWithoutNodeRef<K extends Comparable<K>,D> {
-//	private NodeRef m_Root = new NodeRef();
-	
+public class BinTreeWithoutNodeRef<K extends Comparable<K>, D> {
+	// private NodeRef m_Root = new NodeRef();
+	private Node m_Root = null;
+
 	class Node {
 		K m_Key;
 		D m_Data;
-		NodeRef m_Left = new NodeRef();
-		NodeRef m_Right = new NodeRef();
-		
-		public Node(K key, D data){
+		Node m_Left;
+		Node m_Right;
+
+		public Node(K key, D data) {
 			m_Key = key;
 			m_Data = data;
-		}
-	}
-	
-	class NodeRef {
-		private Node m_Node = null;
-		
-		public void set(Node n){
-			m_Node = n;
-		}
-		
-		public Node get(){
-			return m_Node;
+			m_Left = null;
+			m_Right = null;
 		}
 	}
 
-	public void insert(K key, D data){
-		NodeRef tmp = m_Root;
-		while (tmp.get() != null){
-			tmp = (key.compareTo(tmp.get().m_Key) < 0) ? tmp.get().m_Left : tmp.get().m_Right;
-		}
-		tmp.set(new Node(key,data));
+	public void insert_help(K key, D data) {
+		if (m_Root == null)
+			m_Root = new Node(key, data);
+		else
+			insert(key, data, m_Root);
 	}
 
-	public Node search(K key){
-		Node tmp = m_Root.get();
-		while(tmp != null){
-			final int RES = key.compareTo(tmp.m_Key);
-			if(RES == 0)
-				return tmp;
-			tmp = RES < 0 ? tmp.m_Left.get() : tmp.m_Right.get();
+	private void insert(K key, D data, Node actualNode) {
+		final int TMP = key.compareTo(actualNode.m_Key);
+		if (TMP < 0) {
+			if (actualNode.m_Left == null)
+				actualNode.m_Left = new Node(key, data);
+			else
+				insert(key, data, actualNode.m_Left);
+		} else {
+			if (actualNode.m_Right == null)
+				actualNode.m_Right = new Node(key, data);
+			else
+				insert(key, data, actualNode.m_Right);
+		}
+	}
+
+	public void giveMeTheFuckingNodeData(K key) {
+		if (search(key) != null)
+			System.out.println("Zu dem Schlüssel " + key
+					+ " gibt es folgende Daten: " + (search(key).m_Data));
+		else
+			System.out.println("Zu dem Schlüssel " + key
+					+ " gibt es folgende Daten: " + (search(key)));
+	}
+
+	private Node search(K key) {
+		Node actualNode = m_Root;
+		while (actualNode != null) {
+			final int RES = key.compareTo(actualNode.m_Key);
+			if (RES == 0)
+				return actualNode;
+			actualNode = RES < 0 ? actualNode.m_Left : actualNode.m_Right;
 		}
 		return null;
 	}
 
-	public void remove(K key){
-		NodeRef tmp = m_Root;
-		while(tmp.get() != null && tmp.get().m_Key != key){
-			tmp = key.compareTo(tmp.get().m_Key) < 0 ? tmp.get().m_Left : tmp.get().m_Right;
-		}
-		Node next = null;
-		if(tmp.get() == null){
-			return;
-		} else if(tmp.get().m_Right.get() == null){
-			next = tmp.get().m_Left.get();
-		} else {
-			next = tmp.get().m_Right.get();
-			NodeRef pNF = next.m_Left;
-			while(pNF.get() != null)
-				pNF = pNF.get().m_Left;
-			pNF.set(tmp.get().m_Left.get());
-		}
-		tmp.set(next);
+	public void remove_help(K key) {
+		/* 1. Fall = n2d == m_Root */
+		if (key == m_Root.m_Key)
+			removeRoot(m_Root);
+		else
+			remove(key, m_Root);
 	}
-}
 
+	private void removeRoot(Node actualNode) {
+		if (actualNode.m_Right != null && actualNode.m_Left != null) {
+			Node tmp = actualNode.m_Right;
+			while (tmp.m_Left != null) {
+				tmp = tmp.m_Left;
+			}
+			tmp.m_Left = actualNode.m_Left;
+			m_Root = actualNode.m_Right;
+		} else if (actualNode.m_Right == null && actualNode.m_Left != null)
+			m_Root = actualNode.m_Left;
+		else if (actualNode.m_Right != null && actualNode.m_Left == null)
+			m_Root = actualNode.m_Right;
+		else if (actualNode.m_Right == null && actualNode.m_Left == null)
+			m_Root = null;
+	}
+
+	private void remove(K key, Node actualNode) {
+		/* 2. Fall = n2d != m_Root */
+		final int RES = key.compareTo(actualNode.m_Key);
+		if (RES < 0) {
+			if (actualNode.m_Left.m_Key == key) {
+				Node tmp;
+				if (actualNode.m_Left.m_Right != null
+						&& actualNode.m_Left.m_Left != null) {
+					tmp = actualNode.m_Left.m_Right;
+					while (tmp.m_Left != null) {
+						tmp = tmp.m_Left;
+					}
+					tmp.m_Left = actualNode.m_Left.m_Left;
+					actualNode.m_Left = actualNode.m_Left.m_Right;
+				} else if (actualNode.m_Left.m_Right == null
+						&& actualNode.m_Left.m_Left != null)
+					actualNode.m_Left = actualNode.m_Left.m_Left;
+				else if (actualNode.m_Left.m_Right != null
+						&& actualNode.m_Left.m_Left == null)
+					actualNode.m_Left = actualNode.m_Left.m_Right;
+				else if (actualNode.m_Left.m_Right == null
+						&& actualNode.m_Left.m_Left == null)
+					actualNode.m_Left = null;
+			} else
+				remove(key, actualNode.m_Left);
+		} else {
+			if (actualNode.m_Right.m_Key == key) {
+				Node tmp;
+				if (actualNode.m_Right.m_Right != null
+						&& actualNode.m_Right.m_Left != null) {
+					tmp = actualNode.m_Right.m_Right;
+					while (tmp.m_Left != null) {
+						tmp = tmp.m_Left;
+					}
+					tmp.m_Left = actualNode.m_Right.m_Left;
+					actualNode.m_Left = actualNode.m_Right.m_Right;
+				} else if (actualNode.m_Right.m_Right == null
+						&& actualNode.m_Right.m_Left != null)
+					actualNode.m_Right = actualNode.m_Right.m_Left;
+				else if (actualNode.m_Right.m_Right != null
+						&& actualNode.m_Right.m_Left == null)
+					actualNode.m_Right = actualNode.m_Right.m_Right;
+				else if (actualNode.m_Right.m_Right == null
+						&& actualNode.m_Right.m_Left == null)
+					actualNode.m_Right = null;
+			} else
+				remove(key, actualNode.m_Right);
+		}
+	}
+
+	// private void remove(K key, Node actualNode){
+	// /* 2. Fall = n2d != m_Root */
+	// final int RES = key.compareTo(actualNode.m_Key);
+	// if(RES < 0){
+	// comparer(key, actualNode.m_Left);
+	// } else {
+	// comparer(key, actualNode.m_Right);
+	// }
+	// }
+	//
+	// private void comparer(K key, Node needIt){
+	// if(needIt.m_Key == key){
+	// Node tmp;
+	// if(needIt.m_Right != null && needIt.m_Left != null){
+	// tmp = needIt.m_Right;
+	// while(tmp.m_Left != null){
+	// tmp = tmp.m_Left;
+	// }
+	// tmp.m_Left = needIt.m_Left;
+	// needIt = needIt.m_Right;
+	// }
+	// else if(needIt.m_Right == null && needIt.m_Left != null)
+	// needIt.m_Left = needIt.m_Left;
+	// else if(needIt.m_Right != null && needIt.m_Left == null)
+	// needIt = needIt.m_Right;
+	// else if(needIt.m_Right == null && needIt.m_Left == null)
+	// needIt = null;
+	// } else
+	// remove(key, needIt);
+	// }
+}
