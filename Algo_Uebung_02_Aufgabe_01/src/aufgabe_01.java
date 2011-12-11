@@ -106,8 +106,8 @@ class Pic extends Frame {
 
 public class aufgabe_01 {
 	public static void main(String[] args) throws Exception {
-//		Controller c = new Controller();
-//		c.simulate();
-		new Pic();
+		Controller c = new Controller();
+		c.simulate();
+//		new Pic();
 	}
 }
