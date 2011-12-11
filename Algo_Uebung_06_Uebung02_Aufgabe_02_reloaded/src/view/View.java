@@ -7,11 +7,13 @@ import model.*;
 
 public class View extends Frame{
 	private Model mod;
-	ShowOrgPic sop; 
+	public ShowOrgPic sop;
+	public ShowComPic scp;
 	
 	public View(Model mod){
-		super("Bild kompriemieren");
+		super("Bild komprimieren");
 		this.mod = mod;
+		sop = new ShowOrgPic(this);
 		
 		addWindowListener(new WindowAdapter(){
 			@Override
@@ -19,12 +21,22 @@ public class View extends Frame{
 				System.exit(0);
 			}
 		});
-		
-		setSize();
-		
+		setLayout(new GridLayout(2, 1));
+		add(sop);
+		System.out.println("Farben zählen ...");
+		mod.countColors(sop.m_Pix, sop.W, sop.H);
+		System.out.println("Nun sortieren ...");
+		mod.sortColors();
+		System.out.println("Compress ...");
+		mod.compress(sop.W);
+		scp = new ShowComPic(mod.m_Pix);
+		add(scp);
+		pack();
+//		setSize(sop.W+20,800);
+		setBounds(400, 200, sop.W+20, 800);
+		setVisible(true);
+		System.out.println(sop.m_Pix.length);
 	}
-	
-	
 	
 	
 }

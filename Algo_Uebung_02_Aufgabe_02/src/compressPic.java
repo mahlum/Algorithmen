@@ -40,3 +40,6 @@ public class compressPic {
 		return m_Pix;
 	}
 }
+
+
+

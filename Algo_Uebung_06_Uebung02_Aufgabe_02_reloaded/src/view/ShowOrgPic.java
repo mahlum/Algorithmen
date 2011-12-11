@@ -4,10 +4,10 @@ import java.awt.image.MemoryImageSource;
 import java.awt.image.*;
 
 public class ShowOrgPic extends Component{
-	final int W = 400;
-	final int H = 350;
+	public final int W = 400;
+	public final int H = 350;
 	Image m_Img;
-	int[] m_Pix = new int[W*H];
+	public int[] m_Pix = new int[W*H];
 	MemoryImageSource m_ImgSrc;
 	
 	public ShowOrgPic(Frame father){
@@ -23,6 +23,7 @@ public class ShowOrgPic extends Component{
 			grab.grabPixels();
 			m_ImgSrc = new MemoryImageSource(W, H, m_Pix, 0, W);
 			m_Img = createImage(m_ImgSrc);
+			
 		} catch (InterruptedException e){}
 	}
 	
