@@ -4,8 +4,8 @@ import java.awt.image.MemoryImageSource;
 import java.awt.image.*;
 
 public class ShowOrgPic extends Component{
-	public final int W = 400;
-	public final int H = 350;
+	public final int W = 300;
+	public final int H = 250;
 	Image m_Img;
 	public int[] m_Pix = new int[W*H];
 	MemoryImageSource m_ImgSrc;
