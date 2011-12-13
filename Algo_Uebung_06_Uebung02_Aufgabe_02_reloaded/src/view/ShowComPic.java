@@ -5,8 +5,8 @@ import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
 
 public class ShowComPic extends Component {
-	final int W = 300;
-	final int H = 250;
+	final int W = 600;
+	final int H = 550;
 	Image m_img;
 	int[] m_Pix = new int[W * H];
 	MemoryImageSource m_ImgSrc;
