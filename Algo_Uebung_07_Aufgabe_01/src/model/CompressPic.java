@@ -5,7 +5,8 @@ import java.util.Vector;
 public class CompressPic {
 	public static int[] compress(Vector<SaveTheValues> vec, int length, int W, int H){
 		//Leeren m_Pix mit der Länge des übergebenen m_Pix anlegen
-		int[] m_Pix = new int[length];
+		int[] m_Pix = new int[length]; 
+		int besPos;
 		// Wieviele Farben gibt es denn eigentlich?
 		System.out.println(vec.size() + " verschiedene Farben! 50% davon sind: " + vec.size()/2);
 		//Nun muss erstmal für die drei Farbwerte drei Vectoren angelegt werden, die 
@@ -30,10 +31,18 @@ public class CompressPic {
 		
 		//4. Nun die jeweiligen "ähnlichen" Farben suchen
 		for(int i = 0; i <= vec.size()/2; ++i){
-			
+			besPos = GetPoint.searchBin(redCol, greenCol, blueCol, vec, i);
+			for(int s = 0; s <= vec.get(i).count; ++s){
+				vec.get(besPos).ls.add(vec.get(i).ls.get(s).getLocation());
+				++vec.get(besPos).count;
+			}
 		}
 		
-		return null;
+		for(int i = vec.size()-1; i > vec.size()/2-1; --i){
+			for(int j = 0; j <= vec.get(i).count; ++j)
+				m_Pix[vec.get(i).ls.get(j).y * W + vec.get(i).ls.get(j).x] = vec.get(i).colVal;
+		}		
+		return m_Pix;		
 	}
 	
 	private static void outputColors(Vector<ValueColor> vC){
