@@ -31,7 +31,7 @@ public class CompressPic {
 		
 		//4. Nun die jeweiligen "ähnlichen" Farben suchen
 		for(int i = 0; i <= vec.size()/2; ++i){
-			besPos = GetPoint.searchBin(redCol, greenCol, blueCol, vec, i);
+			besPos = GetPoint_Old.searchBin(redCol, greenCol, blueCol, vec, i);
 			for(int s = 0; s <= vec.get(i).count; ++s){
 				vec.get(besPos).ls.add(vec.get(i).ls.get(s).getLocation());
 				++vec.get(besPos).count;
