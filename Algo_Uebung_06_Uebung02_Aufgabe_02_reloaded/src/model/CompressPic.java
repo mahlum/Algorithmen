@@ -12,8 +12,10 @@ public class CompressPic {
 			half = vec.size()/2;
 		else
 			half = (vec.size()+1)/2;
-		System.out.println("Die Hälfte aller Farbwerte ist dann "+ half);
+		System.out.println("Die Hï¿½lfte aller Farbwerte ist dann "+ half);
 		
+		System.out.println("Compressstart!");
+		long timeStart = System.currentTimeMillis();
 		for(int i = 0; i <= half; ++i){
 			bestColor = 255+255+255;
 			for(int j = vec.size()-1; j > half; --j){
@@ -38,7 +40,10 @@ public class CompressPic {
 				vec.get(pos).ls.add(vec.get(i).ls.get(s).getLocation());
 				++vec.get(pos).count;
 			}
+			
 		}
+		long timeEnd = System.currentTimeMillis();
+		System.out.println("Dauer: " +(timeEnd - timeStart));
 		
 		for(int i = vec.size()-1; i > half-1; --i){
 			for(int j = 0; j <= vec.get(i).count; ++j)
