@@ -28,7 +28,21 @@ public class BinTree<K extends Comparable<K>,D> {
 	}
 	
 	public void insert(K key, D data){
-		NodeRef tmp =
+		NodeRef tmp = m_Root;
+		while(tmp.get() != null){
+			tmp = (key.compareTo(tmp.get().m_Key) < 0) ? tmp.get().m_Left : tmp.get().m_Right;
+		}
+		tmp.set(new Node(key, data));
+	}
+	
+	public Node search(K key){
+		Node tmp = m_Root.get();
+		while(tmp != null){
+			final int RES = key.compareTo(tmp.m_Key);
+			if(RES == 0) return tmp;
+			tmp = RES < 0 ? tmp.m_Left.get() : tmp.m_Right.get();
+		}
+		return null;
 	}
 	
 
