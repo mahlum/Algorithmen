@@ -18,18 +18,8 @@ public class TtfTree<K extends Comparable<K>, D> {
 		NodeRef m_Right = new NodeRef();
 		
 		public Node (K key, D data){
-			if(m_KeyLeft == null) {
 				m_KeyLeft = key;
 				m_DataLeft = data;
-			}
-			else if(m_KeyMiddle == null) {
-				m_KeyMiddle = key;
-				m_DataMiddle = data;
-			}
-			else {
-				m_KeyRight = key;
-				m_DataRight = data;
-			}
 		}
 	}
 	
@@ -59,37 +49,72 @@ public class TtfTree<K extends Comparable<K>, D> {
 				m_Root.m_Node.m_KeyRight != null){
 			tmp = newNodeRoot(tmp);
 		}
-		
-		
-		
-		
-		
-		
 		// Ende 1. Fall
 		
-		
+		// Nun den Baum runtergehen, bis richtigen Punkt gefunden. Falls vollen Node gefunden, diesen Aufsplitten
+		while(tmp.get() != null){
+			if(tmp.m_Node.m_KeyLeft != null &&
+					tmp.m_Node.m_KeyMiddle != null &&
+					tmp.m_Node.m_KeyRight != null){
+				tmp = newNode(tmp);
+			}
+				
+			
+			//Pfad w√§hlen :) 
+			if(key.compareTo(tmp.get().m_KeyLeft) < 0) tmp = tmp.get().m_Left;
+			else if(key.compareTo(tmp.get().m_KeyMiddle) < 0) tmp = tmp.get().m_MiddleLeft;
+			else if(key.compareTo(tmp.get().m_KeyRight) < 0) tmp = tmp.get().m_MiddleRight;
+			else tmp = tmp.get().m_Right;
+		}
 	}
 	
 	public NodeRef newNodeRoot(NodeRef tmp){
 		NodeRef newRoot = new NodeRef();
 		newRoot.set(new Node(tmp.m_Node.m_KeyMiddle, tmp.m_Node.m_DataMiddle));
-		newRoot.m_Node.m_Left = tmp;
+		newRoot.m_Node.m_Left = new NodeRef();
+		newRoot.m_Node.m_Left.set(new Node(tmp.m_Node.m_KeyLeft, tmp.m_Node.m_DataLeft));
 		newRoot.m_Node.m_Right = new NodeRef();
 		newRoot.m_Node.m_Right.set(new Node(tmp.m_Node.m_KeyRight, tmp.m_Node.m_DataRight));
 		
-		// Linker Knoten: Verweise ‰ndern
-		tmp.m_Node.m_Right.set(tmp.m_Node.m_MiddleLeft.m_Node);
-		tmp.m_Node.m_MiddleLeft = null;
-		tmp.m_Node.m_MiddleRight = null;
-		// Linker Konten: ¸berfl¸ssige Keys und Data lˆschen
-		tmp.m_Node.m_KeyMiddle = null;
-		tmp.m_Node.m_KeyRight = null;		
-		tmp.m_Node.m_DataMiddle = null;
-		tmp.m_Node.m_DataRight = null;
+		// Linker Knoten: Verweise ÔøΩndern
+		newRoot.m_Node.m_Left.m_Node.m_Left.set(tmp.m_Node.m_Left.m_Node);
+		newRoot.m_Node.m_Left.m_Node.m_Right.set(tmp.m_Node.m_MiddleLeft.m_Node);
 		
-		return null;
+		// Rechter Knoten: Verweise √§ndern
+		newRoot.m_Node.m_Right.m_Node.m_Left.set(tmp.m_Node.m_MiddleRight.m_Node);
+		newRoot.m_Node.m_Right.m_Node.m_Right.set(tmp.m_Node.m_Right.m_Node);
+		
+		return newRoot;
 	}
 	
+	// tmp = aktueller tmp, tmpSplit = Node to Split
+	public NodeRef newNode(NodeRef tmp, NodeRef tmpSplit){
+		if(tmpSplit.m_Node.m_KeyMiddle.compareTo(tmp.m_Node.m_KeyLeft) < 0){
+			// Erstmal umsortieren
+			tmp.m_Node.m_KeyRight = tmp.m_Node.m_KeyMiddle;
+			tmp.m_Node.m_DataRight = tmp.m_Node.m_DataMiddle;
+			tmp.m_Node.m_KeyMiddle = tmp.m_Node.m_KeyLeft;
+			tmp.m_Node.m_DataMiddle = tmp.m_Node.m_DataLeft;
+			tmp.m_Node.m_KeyLeft = tmpSplit.m_Node.m_KeyMiddle;
+			tmp.m_Node.m_DataLeft = tmpSplit.m_Node.m_DataMiddle;
+			// Nun m√ºssen die Verweise ge√§ndert werden
+			
+			
+			
+		} else if (tmp.m_Node.m_KeyMiddle != null && tmpSplit.m_Node.m_KeyMiddle.compareTo(tmp.m_Node.m_KeyMiddle) < 0){
+			tmp.m_Node.m_KeyRight = tmp.m_Node.m_KeyMiddle;
+			tmp.m_Node.m_DataRight = tmp.m_Node.m_DataMiddle;
+			tmp.m_Node.m_KeyMiddle = tmpSplit.m_Node.m_KeyMiddle;
+			tmp.m_Node.m_DataMiddle = tmpSplit.m_Node.m_DataMiddle;
+		} else {
+			tmp.m_Node.m_KeyRight = tmpSplit.m_Node.m_KeyMiddle;
+			tmp.m_Node.m_DataRight = tmpSplit.m_Node.m_DataMiddle;
+		}
+		
+		
+			
+		return null;
+	}
 	
 	public Node search(K key){
 		Node tmp = m_Root.get();
