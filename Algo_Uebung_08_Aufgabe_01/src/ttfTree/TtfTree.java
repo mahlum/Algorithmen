@@ -67,10 +67,7 @@ public class TtfTree<K extends Comparable<K>, D> {
 		 */
 		tmp = m_Root;
 		if(tmp.get() != null){
-			while(tmp.get().m_Left.get() != null || 
-					tmp.get().m_MiddleLeft.get() != null || 
-					tmp.get().m_MiddleRight.get() != null || 
-					tmp.get().m_Right.get() != null){
+			while(tmp.get().m_Left.get() != null){
 				//Pfad wählen :) 	
 				if(oneOfThem(tmp.get(), key)){
 					System.out.println("Schon vorhanden");
@@ -93,9 +90,19 @@ public class TtfTree<K extends Comparable<K>, D> {
 					else
 					 tmp = tmp.get().m_MiddleRight;
 				} else {
-					if (tmp.get().m_KeyMiddle == null) tmp = tmp.get().m_MiddleLeft;
-					if (tmp.get().m_KeyRight == null) tmp = tmp.get().m_MiddleRight;
-					if(nodeFull(tmp.get().m_Right.get()))
+					if (tmp.get().m_KeyMiddle == null) {
+						if(nodeFull(tmp.get().m_MiddleLeft.get()))
+							tmp = newNode(tmp, tmp.get().m_MiddleLeft);
+						else
+							tmp = tmp.get().m_MiddleLeft;
+					}
+					else if (tmp.get().m_KeyRight == null){
+						if(nodeFull(tmp.get().m_MiddleRight.get()))
+							tmp = newNode(tmp, tmp.get().m_MiddleRight);
+						else
+							tmp = tmp.get().m_MiddleRight;
+					}
+					else if(nodeFull(tmp.get().m_Right.get()))
 						tmp = newNode(tmp, tmp.get().m_Right);
 					else
 						tmp = tmp.get().m_Right;
@@ -232,13 +239,13 @@ public class TtfTree<K extends Comparable<K>, D> {
 		// Verschieben ist nicht n�tig!
 		// Von tmpSplit die MiddleWerte auf Position "Right" setzen
 		tmp.get().m_KeyRight = tmpSplit.get().m_KeyMiddle;
-		tmp.get().m_DataRight = tmpSplit.get().m_DataRight;
+		tmp.get().m_DataRight = tmpSplit.get().m_DataMiddle;
 		// Verschieben der Verweise nicht n�tig!
 		// Neue Verweise anlegen
 		tmp.get().m_MiddleRight = new NodeRef();
 		tmp.get().m_Right = new NodeRef();
 		// Die neuen Verweise mit Leben f�llen
-		tmp.get().m_MiddleRight.set(new Node(tmpSplit.get().m_KeyLeft, tmpSplit.get().m_DataRight));
+		tmp.get().m_MiddleRight.set(new Node(tmpSplit.get().m_KeyLeft, tmpSplit.get().m_DataLeft));
 		tmp.get().m_MiddleRight.get().m_Left = tmpSplit.get().m_Left;
 		tmp.get().m_MiddleRight.get().m_MiddleLeft = tmpSplit.get().m_MiddleLeft;
 		
@@ -249,8 +256,67 @@ public class TtfTree<K extends Comparable<K>, D> {
 		return tmp;
 	}
 	
-	public Node search(K key){
-		Node tmp = m_Root.get();
+	public D search_help(K key){
+		return search(key);
+	}
+	
+	private D search(K key){
+		NodeRef tmp = m_Root;
+		while(tmp.get().m_Left != null){
+			if(tmp.get().m_KeyLeft.compareTo(key) == 0) return tmp.get().m_DataLeft;
+			if(tmp.get().m_KeyMiddle != null && key.compareTo(tmp.get().m_KeyMiddle) == 0) return tmp.get().m_DataMiddle;
+			if(tmp.get().m_KeyRight != null && key.compareTo(tmp.get().m_KeyRight) == 0) return tmp.get().m_DataRight;
+			
+			if(key.compareTo(tmp.get().m_KeyLeft) < 0) tmp = tmp.get().m_Left;
+			else if(tmp.get().m_KeyMiddle != null && key.compareTo(tmp.get().m_KeyMiddle) < 0) tmp = tmp.get().m_MiddleLeft;
+			else if(tmp.get().m_KeyRight != null && key.compareTo(tmp.get().m_KeyRight) < 0) tmp = tmp.get().m_MiddleRight;
+			else {
+				if(tmp.get().m_KeyMiddle == null) tmp = tmp.get().m_MiddleLeft;
+				else if(tmp.get().m_KeyRight == null) tmp = tmp.get().m_MiddleRight;
+				else tmp = tmp.get().m_Right;
+			}
+		}
+		
 		return null;
+	}
+	
+	public void outputTree_help(){
+		outputTree(m_Root, 0);
+	}
+	
+	private void outputTree(NodeRef tmp, int indent){
+		//REKURSION :) Wie ich es liebe ;)  
+		if(tmp.get().m_Right.get() != null) {
+			outputTree(tmp.get().m_Right, indent+1);
+			outputValue(tmp.get().m_KeyRight, indent);
+		}
+		if(tmp.get().m_MiddleRight.get() != null) {
+			outputTree(tmp.get().m_MiddleRight, indent+1);
+			outputValue(tmp.get().m_KeyMiddle, indent);
+		}
+		if(tmp.get().m_MiddleLeft.get() != null) {
+			outputTree(tmp.get().m_MiddleLeft, indent+1);
+			outputValue(tmp.get().m_KeyLeft, indent);
+		}
+		if(tmp.get().m_Left.get() != null) outputTree(tmp.get().m_Left, indent+1);
+		
+		if(tmp.get().m_Left.get() == null) outputAll(tmp.get(), indent);		
+	}
+	
+	private void outputValue(K value, int indent){
+		indent(indent);
+		System.out.print(value + "\n");
+	}
+	
+	private void outputAll(Node node, int indent){
+		indent(indent);
+		if(node.m_KeyLeft != null) System.out.print(node.m_KeyLeft + " ");
+		if(node.m_KeyMiddle != null) System.out.print(node.m_KeyMiddle + " ");
+		if(node.m_KeyRight != null) System.out.print(node.m_KeyRight);
+		System.out.println();
+	}
+	
+	private void indent(int indent){
+		for(int i = 0; i <= indent; ++i) System.out.print("\t");
 	}
 }
