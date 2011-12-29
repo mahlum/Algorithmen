@@ -1,3 +1,7 @@
+/**
+ *  TODO: newNode bearbeiten (was ist bei middle == null)
+ */
+
 package ttfTree;
 
 public class TtfTree<K extends Comparable<K>, D> {
@@ -44,10 +48,12 @@ public class TtfTree<K extends Comparable<K>, D> {
 		 * 2. Fall irgendein Node ist voll! :)
 		 */
 		// Start 1. Fall: 
-		if(m_Root.get().m_KeyLeft != null && 
+		if(m_Root.get() != null){
+			if(m_Root.get().m_KeyLeft != null && 
 				m_Root.get().m_KeyMiddle != null &&
 				m_Root.get().m_KeyRight != null){
-			newNodeRoot();
+				newNodeRoot();
+			}
 		}
 		// Ende 1. Fall
 		
@@ -55,30 +61,71 @@ public class TtfTree<K extends Comparable<K>, D> {
 		/**
 		 * Vorgehen
 		 * 
-		 * 1. Ist der nächste Node voll?
-		 * 2. Bin ich am Ende angekommen und kann mein key & data eingefügt werden? -> while schleife :) 
+		 * 1. Ist der naechste Node voll?
+		 * 2. Bin ich am Ende angekommen und kann mein key & data eingefuegt werden? -> while schleife :) 
 		 * 
 		 */
-		
-		while(tmp.get().m_Left != null && 
-				tmp.get().m_MiddleLeft != null && 
-				tmp.get().m_MiddleRight != null && 
-				tmp.get().m_Right != null){
-			//Pfad wÃ¤hlen :) 
+		tmp = m_Root;
+		if(tmp.get() != null){
+			while(tmp.get().m_Left.get() != null || 
+					tmp.get().m_MiddleLeft.get() != null || 
+					tmp.get().m_MiddleRight.get() != null || 
+					tmp.get().m_Right.get() != null){
+				//Pfad wÃ¤hlen :) 	
+				if(oneOfThem(tmp.get(), key)){
+					System.out.println("Schon vorhanden");
+					return;
+				}
+				
+				if(key.compareTo(tmp.get().m_KeyLeft) < 0){
+					if(nodeFull(tmp.get().m_Left.get()))
+						tmp = newNode(tmp, tmp.get().m_Left);
+					else
+						tmp = tmp.get().m_Left;
+				} else if(tmp.get().m_KeyMiddle != null && key.compareTo(tmp.get().m_KeyMiddle) < 0) {
+					if(nodeFull(tmp.get().m_MiddleLeft.get()))
+						tmp = newNode(tmp, tmp.get().m_MiddleLeft);
+					else
+						tmp = tmp.get().m_MiddleLeft;
+				} else if(tmp.get().m_KeyRight != null && key.compareTo(tmp.get().m_KeyRight) < 0) {
+					if(nodeFull(tmp.get().m_MiddleRight.get()))
+						tmp = newNode(tmp, tmp.get().m_MiddleRight);
+					else
+					 tmp = tmp.get().m_MiddleRight;
+				} else {
+					if (tmp.get().m_KeyMiddle == null) tmp = tmp.get().m_MiddleLeft;
+					if (tmp.get().m_KeyRight == null) tmp = tmp.get().m_MiddleRight;
+					if(nodeFull(tmp.get().m_Right.get()))
+						tmp = newNode(tmp, tmp.get().m_Right);
+					else
+						tmp = tmp.get().m_Right;
+				}
+			} 
+			
+			// Am letzen Node angekommen... nun einsortieren ! 
 			if(key.compareTo(tmp.get().m_KeyLeft) < 0){
-				if(nodeFull(tmp.get().m_Left.get()))
-					tmp = newNode(tmp, tmp.get().m_Left);
-				tmp = tmp.get().m_Left;
+				tmp.get().m_KeyRight = tmp.get().m_KeyMiddle;
+				tmp.get().m_DataRight = tmp.get().m_DataMiddle;
+				tmp.get().m_KeyMiddle = tmp.get().m_KeyLeft;
+				tmp.get().m_DataMiddle = tmp.get().m_DataLeft;
 				
+				tmp.get().m_KeyLeft = key;
+				tmp.get().m_DataLeft = data;
+			} else if(tmp.get().m_KeyMiddle == null) {
+				tmp.get().m_KeyMiddle = key;
+				tmp.get().m_DataMiddle = data;
+			} else if(tmp.get().m_KeyMiddle != null && key.compareTo(tmp.get().m_KeyMiddle) < 0 && !oneOfThem(tmp.get(), key)){
+				tmp.get().m_KeyRight = tmp.get().m_KeyMiddle;
+				tmp.get().m_DataRight = tmp.get().m_DataMiddle;
 				
-			} else if(tmp.get().m_KeyMiddle != null && key.compareTo(tmp.get().m_KeyMiddle) < 0) {
-				if(nodeFull(tmp.get().m_MiddleLeft.get()))
-					tmp = newNode(tmp, tmp.get().m_MiddleLeft);
-				tmp = tmp.get().m_MiddleLeft;
-			} else if(key.compareTo(tmp.get().m_KeyRight) < 0) {
-				tmp = tmp.get().m_MiddleRight;
+				tmp.get().m_KeyMiddle = key;
+				tmp.get().m_DataMiddle = data;
+			} else if(!oneOfThem(tmp.get(), key)){
+				tmp.get().m_KeyRight = key;
+				tmp.get().m_DataRight = data;
 			}
-			else tmp = tmp.get().m_Right;
+		} else {
+			tmp.set(new Node(key, data)); 
 		}
 	}
 	
@@ -86,6 +133,13 @@ public class TtfTree<K extends Comparable<K>, D> {
 		if(tmp.m_KeyLeft != null && tmp.m_KeyMiddle != null && tmp.m_KeyRight != null)
 			return true;
 		else
+			return false;
+	}
+	
+	private boolean oneOfThem(Node tmp, K key){
+		if(tmp.m_KeyLeft == key || tmp.m_KeyMiddle == key || tmp.m_KeyRight == key) 
+			return true;
+		else 
 			return false;
 	}
 	
@@ -175,15 +229,15 @@ public class TtfTree<K extends Comparable<K>, D> {
 	}
 	
 	private NodeRef newRightNode(NodeRef tmp, NodeRef tmpSplit){
-		// Verschieben ist nicht nötig!
+		// Verschieben ist nicht nï¿½tig!
 		// Von tmpSplit die MiddleWerte auf Position "Right" setzen
 		tmp.get().m_KeyRight = tmpSplit.get().m_KeyMiddle;
 		tmp.get().m_DataRight = tmpSplit.get().m_DataRight;
-		// Verschieben der Verweise nicht nötig!
+		// Verschieben der Verweise nicht nï¿½tig!
 		// Neue Verweise anlegen
 		tmp.get().m_MiddleRight = new NodeRef();
 		tmp.get().m_Right = new NodeRef();
-		// Die neuen Verweise mit Leben füllen
+		// Die neuen Verweise mit Leben fï¿½llen
 		tmp.get().m_MiddleRight.set(new Node(tmpSplit.get().m_KeyLeft, tmpSplit.get().m_DataRight));
 		tmp.get().m_MiddleRight.get().m_Left = tmpSplit.get().m_Left;
 		tmp.get().m_MiddleRight.get().m_MiddleLeft = tmpSplit.get().m_MiddleLeft;
