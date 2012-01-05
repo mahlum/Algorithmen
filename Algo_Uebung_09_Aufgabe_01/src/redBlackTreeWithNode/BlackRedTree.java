@@ -76,16 +76,7 @@ public class BlackRedTree <K extends Comparable<K>, D>{
 			}
 	}
 	
-	public Node search(K key){
-		Node tmp = m_Root.get();
-		while(tmp != null){
-			final int RES = key.compareTo(tmp.m_Key);
-			if(RES == 0) return tmp;
-			tmp = RES < 0 ? tmp.m_Left.get() : tmp.m_Right.get();
-		}
-		return null;
-	}
-	
+
 	private void rotate(NodeRef node, NodeRef dad){
 		Node son = node.get();
 		if(dad.get().m_Left == node){
@@ -99,5 +90,51 @@ public class BlackRedTree <K extends Comparable<K>, D>{
 		}
 		dad.set(son);
 	}
+	
+	public Node search(K key){
+		Node tmp = m_Root.get();
+		while(tmp != null){
+			final int RES = key.compareTo(tmp.m_Key);
+			if(RES == 0) return tmp;
+			tmp = RES < 0 ? tmp.m_Left.get() : tmp.m_Right.get();
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * Baumausgabe 
+	 */
+	
+	public void outputTree_help(){
+		outputTree(m_Root.get(), -1);
+	}
+	
+	private void outputTree(Node tmp, int indent){
+		//REKURSION :) Wie ich es liebe ;)  
+		if(tmp.m_Left != null && tmp.m_Left.get() == null 
+				&& tmp.m_Right != null && tmp.m_Right.get() == null) {
+			outputValue(tmp, indent);
+		}else {
+			if(tmp.m_Right != null && tmp.m_Right.get() != null) {
+				outputTree(tmp.m_Right.get(), indent+1);
+				outputValue(tmp, indent);
+			} else if(tmp.m_Right != null && tmp.m_Right.get() == null) outputValue(tmp, indent); 
+			
+			
+			if(tmp.m_Left != null && tmp.m_Left.get() != null) outputTree(tmp.m_Left.get(), indent+1);
+		}
+	}
+	
+	private void outputValue(Node value, int indent){
+		indent(indent);
+		if(value.m_blsRed) System.out.print("=");
+		System.out.print(value.m_Key + "\n");
+	}
+		
+	private void indent(int indent){
+		for(int i = 0; i <= indent; ++i) System.out.print("\t");
+	}
+
 
 }
