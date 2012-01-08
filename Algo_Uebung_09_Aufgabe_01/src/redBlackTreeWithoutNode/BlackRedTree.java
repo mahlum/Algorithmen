@@ -3,6 +3,7 @@ package redBlackTreeWithoutNode;
 
 public class BlackRedTree <K extends Comparable<K>, D>{
 	private Node m_Root = null;
+	private Node node = null;
 	
 	class Node {
 		K m_Key;
@@ -35,6 +36,17 @@ public class BlackRedTree <K extends Comparable<K>, D>{
 		if(m_Root == null)
 			m_Root = new Node(key, data);
 		else {
+			
+			/**
+			 * Vorgehen... 
+			 * 1. Aktueller Node: is4Node?
+			 * Beispiel: GrandDad = 7, Dad = 4, Node = 5;
+			 * 		1.1 convert4Node()
+			 * 		1.2 split Node
+			 * 		1.3 Node zurücksetzen ?!? (node = grandDad)
+			 * 2.  
+			 * 
+			 */
 			while(letitwalk){
 				if(node.is4Node()){
 					node.convert4Node();
@@ -43,12 +55,21 @@ public class BlackRedTree <K extends Comparable<K>, D>{
 				final int RES = key.compareTo(node.m_Key);
 				if(RES == 0) return;
 				if(RES < 0) {
+					if(node.m_Left != null && node.m_Left.is4Node()){
+						node.m_Left.convert4Node();
+//						split_it(key, node);
+						split(key, node.m_Left, node, null);
+					}
 					if(node.m_Left == null) {
 						node.m_Left = new Node(key, data);
 						letitwalk = false;
 					} else {
 						final int RES2 = key.compareTo(node.m_Left.m_Key);
 						if(RES2 < 0){
+							if(node.m_Left.m_Left != null && node.m_Left.m_Left.is4Node()){
+								node.m_Left.m_Left.convert4Node();
+								split_it(key, node);
+							}
 							if(node.m_Left.m_Left == null){
 								node.m_Left.m_Left = new Node(key,data);
 								split_it(key, node);
@@ -57,6 +78,10 @@ public class BlackRedTree <K extends Comparable<K>, D>{
 								node = node.m_Left;
 							}
 						} else{
+							if(node.m_Left.m_Right != null && node.m_Left.m_Right.is4Node()){
+								node.m_Left.m_Right.convert4Node();
+								split_it(key, node);
+							}
 							if(node.m_Left.m_Right == null){
 								node.m_Left.m_Right = new Node(key, data);
 								split_it(key, node);
@@ -66,12 +91,21 @@ public class BlackRedTree <K extends Comparable<K>, D>{
 						}
 					}					
 				} else {
+					if(node.m_Right != null && node.m_Right.is4Node()){
+						node.m_Right.convert4Node();
+//						split_it(key, node);
+						split(key, node.m_Right, node, null);
+					}
 					if(node.m_Right == null) {
 						node.m_Right = new Node(key, data);
 						letitwalk = false;
 					} else {
 						final int RES2 = key.compareTo(node.m_Right.m_Key);
 						if(RES2 < 0){
+							if(node.m_Right.m_Left != null && node.m_Right.m_Left.is4Node()){
+								node.m_Right.m_Left.convert4Node();
+								split_it(key, node);
+							}
 							if(node.m_Right.m_Left == null){
 								node.m_Right.m_Left = new Node(key, data);
 								split_it(key, node);
@@ -79,6 +113,10 @@ public class BlackRedTree <K extends Comparable<K>, D>{
 							} else 
 								node = node.m_Right;
 						} else {
+							if(node.m_Right.m_Right != null && node.m_Right.m_Right.is4Node()){
+								node.m_Right.m_Right.convert4Node();
+								split_it(key, node);
+							}
 							if(node.m_Right.m_Right == null){
 								node.m_Right.m_Right = new Node(key, data);
 								split_it(key, node);
@@ -91,6 +129,10 @@ public class BlackRedTree <K extends Comparable<K>, D>{
 			}
 		}
 		if(m_Root != null) m_Root.m_blsRed = false;
+	}
+	
+	private void check4Node(){
+		
 	}
 	
 	private void split_it(K key, Node node){
@@ -114,7 +156,7 @@ public class BlackRedTree <K extends Comparable<K>, D>{
 	}
 	
 	private void split(K key, Node node, Node dad, Node grandDad){
-		if(dad.m_blsRed){
+		if(dad != null && grandDad != null && dad.m_blsRed){
 			grandDad.m_blsRed = true;
 			if(grandDad.m_Key.compareTo(key) <= 0 !=
 					dad.m_Key.compareTo(key) <= 0)
